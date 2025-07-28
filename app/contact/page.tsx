@@ -1,0 +1,195 @@
+"use client"
+
+import type React from "react"
+
+import { motion } from "framer-motion"
+import { Send, MessageCircle, Mail, Clock } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState } from "react"
+import { sendContactEmail } from "@/lib/email"
+
+export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+
+  const contactMethods = [
+    {
+      icon: MessageCircle,
+      title: "Discord",
+      description: "Join our server for instant support",
+      action: "Join Server",
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      description: "hi@ventryx.xyz",
+      action: "Send Email",
+    },
+    {
+      icon: Clock,
+      title: "Response Time",
+      description: "We typically respond within 24 hours",
+      action: "Learn More",
+    },
+  ]
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
+
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      projectType: formData.get("projectType") as string,
+      message: formData.get("message") as string,
+    }
+
+    try {
+      await sendContactEmail(data)
+      setSubmitStatus("success")
+      ;(e.target as HTMLFormElement).reset()
+    } catch (error) {
+      console.error("Error sending email:", error)
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen py-20 px-4">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Get In Touch</h1>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            Ready to bring your project to life? We'd love to hear about your ideas and discuss how we can help make
+            them reality.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          {/* Contact Form */}
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+              <CardHeader>
+                <CardTitle className="text-2xl text-white">Send us a message</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input
+                      name="name"
+                      placeholder="Your Name"
+                      required
+                      className="bg-white/5 border-white/20 text-white placeholder:text-gray-400"
+                    />
+                    <Input
+                      name="email"
+                      type="email"
+                      placeholder="Your Email"
+                      required
+                      className="bg-white/5 border-white/20 text-white placeholder:text-gray-400"
+                    />
+                  </div>
+                  <Input
+                    name="projectType"
+                    placeholder="Project Type (Discord Bot, Website, etc.)"
+                    required
+                    className="bg-white/5 border-white/20 text-white placeholder:text-gray-400"
+                  />
+                  <Textarea
+                    name="message"
+                    placeholder="Tell us about your project..."
+                    rows={6}
+                    required
+                    className="bg-white/5 border-white/20 text-white placeholder:text-gray-400"
+                  />
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                    <Send className="ml-2 w-4 h-4" />
+                  </Button>
+                </form>
+
+                {submitStatus === "success" && (
+                  <div className="text-green-400 text-center p-4 bg-green-400/10 rounded-lg border border-green-400/20">
+                    Message sent successfully! We'll get back to you soon.
+                  </div>
+                )}
+
+                {submitStatus === "error" && (
+                  <div className="text-red-400 text-center p-4 bg-red-400/10 rounded-lg border border-red-400/20">
+                    Failed to send message. Please try again or contact us directly at hi@ventryx.xyz
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Contact Methods */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-6"
+          >
+            {contactMethods.map((method, index) => (
+              <motion.div
+                key={method.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/20 transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-3">
+                        <method.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-white mb-1">{method.title}</h3>
+                        <p className="text-gray-300 text-sm">{method.description}</p>
+                      </div>
+                      <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10">
+                        {method.action}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
+            >
+              <h3 className="text-xl font-bold text-white mb-3">Custom Request Policy</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                We welcome all types of custom requests! Whether you need a unique Discord bot feature, a specialized
+                web application, or something completely different, we're here to help. No project is too small or too
+                complex.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  )
+}
