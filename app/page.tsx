@@ -1,156 +1,145 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Code, Bot, Gamepad2, Monitor, Users, Clock, Award, Heart } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import Hero from "@/components/hero"
+import Services from "@/components/services"
+import About from "@/components/about"
+import Footer from "@/components/footer"
+import { Sparkles } from "lucide-react"
 
 export default function Home() {
-  const floatingIcons = [
-    { icon: Code, delay: 0 },
-    { icon: Bot, delay: 0.2 },
-    { icon: Gamepad2, delay: 0.4 },
-    { icon: Monitor, delay: 0.6 },
-  ]
-
-  const stats = [
-    { icon: Users, label: "Happy Clients", value: "20+" },
-    { icon: Clock, label: "Projects Completed", value: "37+" },
-    { icon: Award, label: "Years Experience", value: "3+" },
-    { icon: Heart, label: "Custom Requests", value: "Always" },
-  ]
-
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4">
-        <div className="container mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
-          >
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              Code Solutions
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                Without Chaos
-              </span>
-            </h1>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Professional Discord bots, stunning websites, Roblox scripts, and custom applications. Your vision, our
-              expertise.
-            </p>
+        {/* Floating Orbs */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute top-3/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.5, 0.3, 0.5],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+      </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link href="/services">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
-                >
-                  Explore Services
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white/40 text-white bg-white/10 hover:bg-white/20 px-8 py-4 text-lg"
-                >
-                  Request Custom Work
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
+      {/* Grid Overlay */}
+      <div className="fixed inset-0 -z-10 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000,transparent)]" />
 
-          {/* Floating Icons */}
-          <div className="relative">
-            {floatingIcons.map(({ icon: Icon, delay }, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: delay + 1, duration: 0.5 }}
-                className="absolute hidden md:block"
-                style={{
-                  left: `${20 + index * 20}%`,
-                  top: `${Math.sin(index) * 50 + 50}px`,
-                }}
-              >
-                <motion.div
-                  animate={{
-                    y: [0, -20, 0],
-                    rotate: [0, 5, -5, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Number.POSITIVE_INFINITY,
-                    delay: index * 0.5,
-                  }}
-                  className="p-4 bg-white/10 backdrop-blur-sm rounded-full border border-white/20"
-                >
-                  <Icon className="w-8 h-8 text-white" />
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Content */}
+      <Hero />
 
-      {/* Stats Section */}
-      <section className="py-20 px-4 bg-black/20">
+      {/* Stats Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-12 px-4"
+      >
         <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Why Choose Ventryx?</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              We're a dedicated team of developers passionate about creating exceptional digital experiences. From
-              Discord communities to web applications, we bring your ideas to life with clean code and innovative
-              solutions.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <stat.icon className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-                <div className="text-gray-300">{stat.label}</div>
-              </motion.div>
-            ))}
+          <div className="glass-strong rounded-3xl p-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { label: "Discord Members", value: "258+", icon: "👥" },
+                { label: "Projects Delivered", value: "1000+", icon: "🚀" },
+                { label: "Happy Clients", value: "500+", icon: "⭐" },
+                { label: "Years Experience", value: "5+", icon: "💎" },
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="text-center"
+                >
+                  <div className="text-4xl mb-2">{stat.icon}</div>
+                  <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-gray-400">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
-          >
-            <h3 className="text-2xl font-bold text-white mb-4 text-center">We Accept Custom Requests</h3>
-            <p className="text-gray-300 text-center max-w-2xl mx-auto">
-              Have a unique project in mind? We love challenges! Whether it's a complex Discord bot, a specialized web
-              application, or a custom Roblox script, we're here to make it happen. Your vision drives our innovation.
-            </p>
-          </motion.div>
         </div>
-      </section>
+      </motion.div>
+
+      <Services />
+      <About />
+
+      {/* CTA Section */}
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-20 px-4"
+      >
+        <div className="container mx-auto">
+          <div className="glass-strong rounded-3xl p-12 text-center relative overflow-hidden">
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"
+              animate={{
+                opacity: [0.5, 0.8, 0.5],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              }}
+            />
+            <div className="relative z-10">
+              <Sparkles className="w-16 h-16 mx-auto mb-6 text-blue-400" />
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Start Your Project?</h2>
+              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Join hundreds of satisfied clients and let's bring your ideas to life with clean code and innovative
+                solutions.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Get Started Today
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      <Footer />
     </div>
   )
 }
