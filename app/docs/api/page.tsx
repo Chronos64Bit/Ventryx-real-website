@@ -1,551 +1,394 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Code, Copy, CheckCircle, ExternalLink, Shield, Database, Webhook } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Copy, Check, Code2, Zap, Shield } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function APIDocsPage() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
 
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text)
+  const copyToClipboard = (code: string, id: string) => {
+    navigator.clipboard.writeText(code)
     setCopiedCode(id)
     setTimeout(() => setCopiedCode(null), 2000)
   }
 
-  const codeExamples = {
-    curl: `curl -X POST https://ventryx.xyz/api/verify \\
+  const curlExample = `curl -X POST https://ventryx.xyz/api/verify \\
   -H "Content-Type: application/json" \\
   -d '{
-    "token": "your_verification_token",
+    "token": "your-verification-token",
     "userId": "123456789012345678",
-    "guildId": "987654321098765432",
-    "username": "TestUser",
-    "discriminator": "1234",
-    "avatar": "a1b2c3d4e5f6g7h8i9j0",
+    "username": "JohnDoe",
+    "avatar": "avatar-hash",
     "webhookUrl": "https://discord.com/api/webhooks/..."
-  }'`,
-    javascript: `const response = await fetch('https://ventryx.xyz/api/verify', {
+  }'`
+
+  const javascriptExample = `const response = await fetch('https://ventryx.xyz/api/verify', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    token: 'your_verification_token',
+    token: 'your-verification-token',
     userId: '123456789012345678',
-    guildId: '987654321098765432',
-    username: 'TestUser',
-    discriminator: '1234',
-    avatar: 'a1b2c3d4e5f6g7h8i9j0',
+    username: 'JohnDoe',
+    avatar: 'avatar-hash',
     webhookUrl: 'https://discord.com/api/webhooks/...'
   })
 });
 
 const data = await response.json();
-console.log(data);`,
-    python: `import requests
+console.log(data);`
+
+  const pythonExample = `import requests
 
 url = "https://ventryx.xyz/api/verify"
 payload = {
-    "token": "your_verification_token",
+    "token": "your-verification-token",
     "userId": "123456789012345678",
-    "guildId": "987654321098765432",
-    "username": "TestUser",
-    "discriminator": "1234",
-    "avatar": "a1b2c3d4e5f6g7h8i9j0",
+    "username": "JohnDoe",
+    "avatar": "avatar-hash",
     "webhookUrl": "https://discord.com/api/webhooks/..."
 }
 
 response = requests.post(url, json=payload)
-data = response.json()
-print(data)`,
-    discordjs: `// Discord.js v14 example
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+print(response.json())`
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('verify')
-        .setDescription('Verify your account with Ventryx'),
-    
-    async execute(interaction) {
-        const token = generateVerificationToken(); // Your token generation logic
-        const verifyUrl = \`https://ventryx.xyz/verify?token=\${token}&user_id=\${interaction.user.id}\`;
-        
-        const embed = new EmbedBuilder()
-            .setTitle('🔐 Account Verification')
-            .setDescription(\`Click the link below to verify your account:\n\n[\${verifyUrl}](\${verifyUrl})\`)
-            .setColor(0x5865F2)
-            .setFooter({ text: 'This link expires in 10 minutes' });
-        
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-        
-        // Store token in your database with expiration
-        await storeVerificationToken(token, interaction.user.id, interaction.guild.id);
-    }
-};`,
+  const nodeExample = `// Example Discord Bot Integration (using any Discord library)
+
+// When user clicks verify button in Discord
+async function handleVerification(interaction) {
+  const verificationToken = generateToken(); // Your token generation logic
+  const verifyUrl = \`https://ventryx.xyz/verify?token=\${verificationToken}&user_id=\${interaction.user.id}\`;
+  
+  // Send verification link to user
+  await interaction.reply({
+    content: \`Click here to verify: \${verifyUrl}\`,
+    ephemeral: true
+  });
+}
+
+// Your webhook will receive the verification data
+// Set up your webhook URL in Discord server settings`
+
+  const responseExample = `{
+  "success": true,
+  "message": "Verification completed successfully!",
+  "data": {
+    "userId": "123456789012345678",
+    "verifiedAt": "2024-10-19T16:59:57.000Z",
+    "ip": "192.168.1.1"
   }
+}`
 
   return (
-    <div className="min-h-screen py-20 px-4">
-      <div className="container mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Ventryx Verification API</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Comprehensive documentation for integrating Discord bot verification with IP logging and webhook support.
-          </p>
-        </motion.div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-96 h-96 bg-purple-500/20 rounded-full blur-3xl -top-48 -left-48 animate-pulse" />
+        <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl top-1/2 right-0 animate-pulse delay-700" />
+        <div className="absolute w-96 h-96 bg-pink-500/20 rounded-full blur-3xl bottom-0 left-1/3 animate-pulse delay-1000" />
+      </div>
 
-        {/* Overview */}
+      {/* Grid overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
+
+      <div className="container mx-auto px-4 py-20 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-12"
+          transition={{ duration: 0.5 }}
+          className="max-w-5xl mx-auto"
         >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Ventryx Verification API
+            </h1>
+            <p className="text-xl text-gray-300">Simple, secure user verification for Discord bots</p>
+          </div>
+
+          {/* Features */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              { icon: Zap, title: "Fast", desc: "Lightning-quick verification" },
+              { icon: Shield, title: "Secure", desc: "IP tracking & validation" },
+              { icon: Code2, title: "Simple", desc: "Easy REST API integration" },
+            ].map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+              >
+                <Card className="glass border-white/10 hover:border-white/20 transition-all">
+                  <CardContent className="p-6 text-center">
+                    <feature.icon className="w-12 h-12 mx-auto mb-4 text-purple-400" />
+                    <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
+                    <p className="text-gray-400 text-sm">{feature.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Quick Start */}
+          <Card className="glass-strong border-white/10 mb-8">
             <CardHeader>
-              <CardTitle className="text-2xl text-white flex items-center">
-                <Shield className="w-6 h-6 mr-2 text-blue-400" />
-                API Overview
-              </CardTitle>
+              <CardTitle className="text-2xl text-white">🚀 Quick Start</CardTitle>
               <CardDescription className="text-gray-300">
-                The Ventryx Verification API provides a secure endpoint for Discord bot verification with automatic IP
-                logging and webhook integration.
+                Get started with the Ventryx Verification API in minutes
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                  <Database className="w-8 h-8 text-blue-400 mb-2" />
-                  <h3 className="text-white font-semibold mb-1">IP Logging</h3>
-                  <p className="text-gray-300 text-sm">Automatically captures and stores user IP addresses</p>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="glass p-4 rounded-lg border border-white/10">
+                  <h4 className="font-semibold text-white mb-2">1. Generate a Verification Token</h4>
+                  <p className="text-gray-300 text-sm">
+                    Create a unique token for each verification request in your Discord bot.
+                  </p>
                 </div>
-                <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                  <Webhook className="w-8 h-8 text-purple-400 mb-2" />
-                  <h3 className="text-white font-semibold mb-1">Webhook Support</h3>
-                  <p className="text-gray-300 text-sm">Send verification data to Discord channels</p>
+                <div className="glass p-4 rounded-lg border border-white/10">
+                  <h4 className="font-semibold text-white mb-2">2. Send User to Verification Page</h4>
+                  <p className="text-gray-300 text-sm mb-2">
+                    Direct users to:{" "}
+                    <code className="bg-black/30 px-2 py-1 rounded text-purple-400">
+                      https://ventryx.xyz/verify?token=TOKEN&user_id=USER_ID
+                    </code>
+                  </p>
                 </div>
-                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
-                  <Shield className="w-8 h-8 text-green-400 mb-2" />
-                  <h3 className="text-white font-semibold mb-1">Secure</h3>
-                  <p className="text-gray-300 text-sm">Token-based verification with validation</p>
+                <div className="glass p-4 rounded-lg border border-white/10">
+                  <h4 className="font-semibold text-white mb-2">3. Receive Webhook Data</h4>
+                  <p className="text-gray-300 text-sm">
+                    Get verification data (including IP) sent to your Discord webhook automatically.
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
-        </motion.div>
 
-        {/* Endpoint Details */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-12"
-        >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+          {/* API Reference */}
+          <Card className="glass-strong border-white/10 mb-8">
             <CardHeader>
-              <CardTitle className="text-2xl text-white">Endpoint Details</CardTitle>
+              <CardTitle className="text-2xl text-white">📖 API Reference</CardTitle>
+              <CardDescription className="text-gray-300">Complete API documentation</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="bg-gray-900/50 rounded-lg p-4 mb-4">
-                <div className="flex items-center space-x-4">
-                  <span className="bg-green-500 text-white px-3 py-1 rounded text-sm font-semibold">POST</span>
-                  <code className="text-blue-300 text-lg">/api/verify</code>
+              <div className="space-y-6">
+                {/* Endpoint */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3">Endpoint</h3>
+                  <div className="glass p-4 rounded-lg border border-white/10">
+                    <code className="text-purple-400">POST https://ventryx.xyz/api/verify</code>
+                  </div>
                 </div>
-              </div>
-              <p className="text-gray-300 mb-4">
-                This endpoint handles Discord user verification, captures IP addresses, and optionally sends data to
-                Discord webhooks.
-              </p>
-              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-                <p className="text-yellow-300 text-sm">
-                  <strong>Note:</strong> This API is designed for Discord bots and requires proper token validation.
-                  Rate limiting is applied to prevent abuse.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
 
-        {/* Request Parameters */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-12"
-        >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-            <CardHeader>
-              <CardTitle className="text-2xl text-white">Request Parameters</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="text-left py-3 px-4 text-white">Parameter</th>
-                      <th className="text-left py-3 px-4 text-white">Type</th>
-                      <th className="text-left py-3 px-4 text-white">Required</th>
-                      <th className="text-left py-3 px-4 text-white">Description</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-300">
-                    <tr className="border-b border-white/5">
-                      <td className="py-3 px-4">
-                        <code className="text-blue-300">token</code>
-                      </td>
-                      <td className="py-3 px-4">string</td>
-                      <td className="py-3 px-4">
-                        <span className="text-red-400">Yes</span>
-                      </td>
-                      <td className="py-3 px-4">Verification token generated by your bot</td>
-                    </tr>
-                    <tr className="border-b border-white/5">
-                      <td className="py-3 px-4">
-                        <code className="text-blue-300">userId</code>
-                      </td>
-                      <td className="py-3 px-4">string</td>
-                      <td className="py-3 px-4">
-                        <span className="text-red-400">Yes</span>
-                      </td>
-                      <td className="py-3 px-4">Discord user ID (snowflake)</td>
-                    </tr>
-                    <tr className="border-b border-white/5">
-                      <td className="py-3 px-4">
-                        <code className="text-blue-300">guildId</code>
-                      </td>
-                      <td className="py-3 px-4">string</td>
-                      <td className="py-3 px-4">
-                        <span className="text-gray-400">No</span>
-                      </td>
-                      <td className="py-3 px-4">Discord server ID where verification occurred</td>
-                    </tr>
-                    <tr className="border-b border-white/5">
-                      <td className="py-3 px-4">
-                        <code className="text-blue-300">username</code>
-                      </td>
-                      <td className="py-3 px-4">string</td>
-                      <td className="py-3 px-4">
-                        <span className="text-gray-400">No</span>
-                      </td>
-                      <td className="py-3 px-4">Discord username</td>
-                    </tr>
-                    <tr className="border-b border-white/5">
-                      <td className="py-3 px-4">
-                        <code className="text-blue-300">discriminator</code>
-                      </td>
-                      <td className="py-3 px-4">string</td>
-                      <td className="py-3 px-4">
-                        <span className="text-gray-400">No</span>
-                      </td>
-                      <td className="py-3 px-4">Discord discriminator (legacy)</td>
-                    </tr>
-                    <tr className="border-b border-white/5">
-                      <td className="py-3 px-4">
-                        <code className="text-blue-300">avatar</code>
-                      </td>
-                      <td className="py-3 px-4">string</td>
-                      <td className="py-3 px-4">
-                        <span className="text-gray-400">No</span>
-                      </td>
-                      <td className="py-3 px-4">Discord avatar hash</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4">
-                        <code className="text-blue-300">webhookUrl</code>
-                      </td>
-                      <td className="py-3 px-4">string</td>
-                      <td className="py-3 px-4">
-                        <span className="text-gray-400">No</span>
-                      </td>
-                      <td className="py-3 px-4">Discord webhook URL for logging</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Response Format */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-12"
-        >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-            <CardHeader>
-              <CardTitle className="text-2xl text-white">Response Format</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-3">Success Response (200)</h3>
-                <div className="bg-gray-900/50 rounded-lg p-4 relative">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute top-2 right-2 text-gray-400 hover:text-white"
-                    onClick={() =>
-                      copyToClipboard(
-                        JSON.stringify(
-                          {
-                            success: true,
-                            message: "Verification completed successfully!",
-                            data: {
-                              userId: "123456789012345678",
-                              verifiedAt: "2024-01-15T10:30:00.000Z",
-                              ip: "192.168.1.1",
-                              id: 12345,
-                            },
-                          },
-                          null,
-                          2,
-                        ),
-                        "success-response",
-                      )
-                    }
-                  >
-                    {copiedCode === "success-response" ? (
-                      <CheckCircle className="w-4 h-4" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </Button>
-                  <pre className="text-green-300 text-sm overflow-x-auto">
-                    {JSON.stringify(
-                      {
-                        success: true,
-                        message: "Verification completed successfully!",
-                        data: {
-                          userId: "123456789012345678",
-                          verifiedAt: "2024-01-15T10:30:00.000Z",
-                          ip: "192.168.1.1",
-                          id: 12345,
-                        },
-                      },
-                      null,
-                      2,
-                    )}
-                  </pre>
+                {/* Request Parameters */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3">Request Parameters</h3>
+                  <div className="glass rounded-lg border border-white/10 overflow-hidden">
+                    <table className="w-full">
+                      <thead className="bg-black/30">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-white text-sm">Parameter</th>
+                          <th className="px-4 py-3 text-left text-white text-sm">Type</th>
+                          <th className="px-4 py-3 text-left text-white text-sm">Required</th>
+                          <th className="px-4 py-3 text-left text-white text-sm">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/10">
+                        <tr>
+                          <td className="px-4 py-3 text-purple-400 font-mono text-sm">token</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">string</td>
+                          <td className="px-4 py-3 text-green-400 text-sm">Yes</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">Verification token</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-3 text-purple-400 font-mono text-sm">userId</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">string</td>
+                          <td className="px-4 py-3 text-green-400 text-sm">Yes</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">Discord user ID</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-3 text-purple-400 font-mono text-sm">guildId</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">string</td>
+                          <td className="px-4 py-3 text-gray-400 text-sm">No</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">Discord server ID</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-3 text-purple-400 font-mono text-sm">username</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">string</td>
+                          <td className="px-4 py-3 text-gray-400 text-sm">No</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">Discord username</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-3 text-purple-400 font-mono text-sm">avatar</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">string</td>
+                          <td className="px-4 py-3 text-gray-400 text-sm">No</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">Avatar hash</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-3 text-purple-400 font-mono text-sm">webhookUrl</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">string</td>
+                          <td className="px-4 py-3 text-gray-400 text-sm">No</td>
+                          <td className="px-4 py-3 text-gray-300 text-sm">Discord webhook URL</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-3">Error Response (400/401/500)</h3>
-                <div className="bg-gray-900/50 rounded-lg p-4 relative">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute top-2 right-2 text-gray-400 hover:text-white"
-                    onClick={() =>
-                      copyToClipboard(
-                        JSON.stringify(
-                          {
-                            success: false,
-                            error: "Missing required fields: token and userId",
-                            message: "Invalid request",
-                          },
-                          null,
-                          2,
-                        ),
-                        "error-response",
-                      )
-                    }
-                  >
-                    {copiedCode === "error-response" ? (
-                      <CheckCircle className="w-4 h-4" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </Button>
-                  <pre className="text-red-300 text-sm overflow-x-auto">
-                    {JSON.stringify(
-                      {
-                        success: false,
-                        error: "Missing required fields: token and userId",
-                        message: "Invalid request",
-                      },
-                      null,
-                      2,
-                    )}
-                  </pre>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Code Examples */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mb-12"
-        >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-            <CardHeader>
-              <CardTitle className="text-2xl text-white flex items-center">
-                <Code className="w-6 h-6 mr-2 text-blue-400" />
-                Code Examples
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {Object.entries(codeExamples).map(([language, code]) => (
-                <div key={language}>
-                  <h3 className="text-lg font-semibold text-white mb-3 capitalize">
-                    {language === "discordjs" ? "Discord.js" : language}
-                  </h3>
-                  <div className="bg-gray-900/50 rounded-lg p-4 relative">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute top-2 right-2 text-gray-400 hover:text-white"
-                      onClick={() => copyToClipboard(code, language)}
-                    >
-                      {copiedCode === language ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    </Button>
-                    <pre className="text-gray-300 text-sm overflow-x-auto pr-12">
-                      <code>{code}</code>
+                {/* Response */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3">Response Example</h3>
+                  <div className="relative glass rounded-lg border border-white/10 overflow-hidden">
+                    <div className="flex items-center justify-between p-3 bg-black/30 border-b border-white/10">
+                      <span className="text-sm text-gray-400">JSON Response</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard(responseExample, "response")}
+                        className="h-8 hover:bg-white/10"
+                      >
+                        {copiedCode === "response" ? (
+                          <Check className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <pre className="p-4 overflow-x-auto">
+                      <code className="text-sm text-gray-300">{responseExample}</code>
                     </pre>
                   </div>
                 </div>
-              ))}
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Rate Limiting & Security */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mb-12"
-        >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-            <CardHeader>
-              <CardTitle className="text-2xl text-white">Rate Limiting & Security</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-3">Rate Limits</h3>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• 10 requests per minute per IP</li>
-                    <li>• 100 requests per hour per IP</li>
-                    <li>• 1000 requests per day per IP</li>
-                    <li>• Burst limit: 5 requests per 10 seconds</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-3">Security Features</h3>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• Token validation required</li>
-                    <li>• IP address logging and monitoring</li>
-                    <li>• Request validation and sanitization</li>
-                    <li>• HTTPS only (TLS 1.2+)</li>
-                  </ul>
-                </div>
               </div>
             </CardContent>
           </Card>
-        </motion.div>
 
-        {/* Database Schema */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="mb-12"
-        >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+          {/* Code Examples */}
+          <Card className="glass-strong border-white/10">
             <CardHeader>
-              <CardTitle className="text-2xl text-white">Database Schema</CardTitle>
-              <CardDescription className="text-gray-300">
-                The verification data is stored in a MySQL database with the following structure:
-              </CardDescription>
+              <CardTitle className="text-2xl text-white">💻 Code Examples</CardTitle>
+              <CardDescription className="text-gray-300">Integration examples in multiple languages</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="bg-gray-900/50 rounded-lg p-4 relative">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="absolute top-2 right-2 text-gray-400 hover:text-white"
-                  onClick={() =>
-                    copyToClipboard(
-                      `CREATE TABLE verifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    discord_user_id VARCHAR(20) NOT NULL,
-    verification_token VARCHAR(255) NOT NULL,
-    ip_address VARCHAR(45) NOT NULL,
-    user_agent TEXT,
-    referer VARCHAR(500),
-    guild_id VARCHAR(20),
-    username VARCHAR(32),
-    discriminator VARCHAR(4),
-    avatar VARCHAR(255),
-    verified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('verified', 'pending', 'failed', 'revoked') DEFAULT 'verified',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);`,
-                      "schema",
-                    )
-                  }
-                >
-                  {copiedCode === "schema" ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </Button>
-                <pre className="text-blue-300 text-sm overflow-x-auto pr-12">
-                  <code>{`CREATE TABLE verifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    discord_user_id VARCHAR(20) NOT NULL,
-    verification_token VARCHAR(255) NOT NULL,
-    ip_address VARCHAR(45) NOT NULL,
-    user_agent TEXT,
-    referer VARCHAR(500),
-    guild_id VARCHAR(20),
-    username VARCHAR(32),
-    discriminator VARCHAR(4),
-    avatar VARCHAR(255),
-    verified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('verified', 'pending', 'failed', 'revoked') DEFAULT 'verified',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);`}</code>
-                </pre>
-              </div>
+              <Tabs defaultValue="curl" className="w-full">
+                <TabsList className="grid w-full grid-cols-4 glass border border-white/10">
+                  <TabsTrigger value="curl">cURL</TabsTrigger>
+                  <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+                  <TabsTrigger value="python">Python</TabsTrigger>
+                  <TabsTrigger value="bot">Discord Bot</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="curl" className="mt-4">
+                  <div className="relative glass rounded-lg border border-white/10 overflow-hidden">
+                    <div className="flex items-center justify-between p-3 bg-black/30 border-b border-white/10">
+                      <span className="text-sm text-gray-400">cURL</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard(curlExample, "curl")}
+                        className="h-8 hover:bg-white/10"
+                      >
+                        {copiedCode === "curl" ? (
+                          <Check className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <pre className="p-4 overflow-x-auto">
+                      <code className="text-sm text-gray-300">{curlExample}</code>
+                    </pre>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="javascript" className="mt-4">
+                  <div className="relative glass rounded-lg border border-white/10 overflow-hidden">
+                    <div className="flex items-center justify-between p-3 bg-black/30 border-b border-white/10">
+                      <span className="text-sm text-gray-400">JavaScript</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard(javascriptExample, "js")}
+                        className="h-8 hover:bg-white/10"
+                      >
+                        {copiedCode === "js" ? (
+                          <Check className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <pre className="p-4 overflow-x-auto">
+                      <code className="text-sm text-gray-300">{javascriptExample}</code>
+                    </pre>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="python" className="mt-4">
+                  <div className="relative glass rounded-lg border border-white/10 overflow-hidden">
+                    <div className="flex items-center justify-between p-3 bg-black/30 border-b border-white/10">
+                      <span className="text-sm text-gray-400">Python</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard(pythonExample, "python")}
+                        className="h-8 hover:bg-white/10"
+                      >
+                        {copiedCode === "python" ? (
+                          <Check className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <pre className="p-4 overflow-x-auto">
+                      <code className="text-sm text-gray-300">{pythonExample}</code>
+                    </pre>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="bot" className="mt-4">
+                  <div className="relative glass rounded-lg border border-white/10 overflow-hidden">
+                    <div className="flex items-center justify-between p-3 bg-black/30 border-b border-white/10">
+                      <span className="text-sm text-gray-400">Discord Bot Integration</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard(nodeExample, "node")}
+                        className="h-8 hover:bg-white/10"
+                      >
+                        {copiedCode === "node" ? (
+                          <Check className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <pre className="p-4 overflow-x-auto">
+                      <code className="text-sm text-gray-300">{nodeExample}</code>
+                    </pre>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
-        </motion.div>
 
-        {/* Support */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+          {/* Rate Limits */}
+          <Card className="glass-strong border-white/10 mt-8">
             <CardHeader>
-              <CardTitle className="text-2xl text-white">Support & Contact</CardTitle>
+              <CardTitle className="text-xl text-white">⚡ Rate Limits</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-gray-300">Need help integrating the Ventryx Verification API? We're here to help!</p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Email Support
-                </Button>
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Join Discord
-                </Button>
+            <CardContent>
+              <div className="space-y-3 text-gray-300">
+                <p>• 100 requests per minute per IP address</p>
+                <p>• 1000 requests per hour per IP address</p>
+                <p className="text-sm text-gray-400 mt-4">Need higher limits? Contact us at flux@ventryx.xyz</p>
               </div>
             </CardContent>
           </Card>

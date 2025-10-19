@@ -2,84 +2,76 @@
 
 import { motion } from "framer-motion"
 import { Shield, Lock, Eye, UserCheck } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function Privacy() {
-  const privacyFeatures = [
+export default function PrivacyPage() {
+  const sections = [
     {
       icon: Shield,
       title: "Data Protection",
-      description: "Your data is encrypted and protected with industry-standard security measures.",
+      content:
+        "We implement industry-standard security measures to protect your data. All information is encrypted and stored securely.",
     },
     {
       icon: Lock,
       title: "Secure Development",
-      description: "All our applications are built with security-first principles and best practices.",
+      content:
+        "Every project is built with security-first principles. We follow best practices to ensure your applications are safe and reliable.",
     },
     {
       icon: Eye,
       title: "Transparency",
-      description: "We believe in complete transparency about how we handle your information.",
+      content:
+        "We believe in complete transparency. You'll always know how we handle your data and what we do with your information.",
     },
     {
       icon: UserCheck,
-      title: "User Control",
-      description: "You maintain full control over your data and can request deletion at any time.",
+      title: "Your Rights",
+      content:
+        "You have full control over your data. Request access, modifications, or deletion at any time. We respect your privacy rights.",
     },
   ]
 
   return (
-    <div className="min-h-screen py-20 px-4">
-      <div className="container mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Privacy First</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Your privacy and security are our top priorities. We implement robust measures to ensure your data remains
-            safe and your experience remains private.
-          </p>
+    <div className="relative pt-24 pb-20 px-4">
+      <div className="container mx-auto max-w-4xl">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">Privacy First</h1>
+          <p className="text-xl text-gray-400">Your privacy and security are our top priorities</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {privacyFeatures.map((feature, index) => (
+        <div className="space-y-6">
+          {sections.map((section, idx) => (
             <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+              key={idx}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ delay: idx * 0.1 }}
+              className="glass-strong rounded-2xl p-8 border-white/10"
             >
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/20 transition-all duration-300 h-full">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 p-3 mb-4">
-                    <feature.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl text-white">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-300">{feature.description}</p>
-                </CardContent>
-              </Card>
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 p-2.5 flex-shrink-0">
+                  <section.icon className="w-full h-full text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold mb-3">{section.title}</h2>
+                  <p className="text-gray-400 leading-relaxed">{section.content}</p>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-16 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-12 glass-strong rounded-2xl p-8 text-center"
         >
-          <div className="bg-gradient-to-r from-green-600/20 to-emerald-600/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold text-white mb-4">GDPR Compliant</h2>
-            <p className="text-gray-300">
-              We fully comply with GDPR regulations and international privacy standards. Your rights are protected, and
-              your data is handled with the utmost care.
-            </p>
-          </div>
+          <h3 className="text-2xl font-bold mb-4">GDPR Compliant</h3>
+          <p className="text-gray-400">
+            We fully comply with GDPR regulations and international privacy standards. Your data is protected and your
+            rights are respected.
+          </p>
         </motion.div>
       </div>
     </div>

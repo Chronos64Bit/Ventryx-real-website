@@ -1,113 +1,102 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Code, Bot, Gamepad2, Monitor, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ArrowRight, Shield, Users, Zap } from "lucide-react"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export default function Hero() {
-  const floatingIcons = [
-    { icon: Code, delay: 0, color: "from-blue-400 to-cyan-400" },
-    { icon: Bot, delay: 0.2, color: "from-purple-400 to-pink-400" },
-    { icon: Gamepad2, delay: 0.4, color: "from-green-400 to-emerald-400" },
-    { icon: Monitor, delay: 0.6, color: "from-orange-400 to-red-400" },
-  ]
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 px-4 overflow-hidden">
-      <div className="container mx-auto text-center relative z-10">
+    <section className="relative pt-32 pb-20 px-4">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-5xl mx-auto"
+          className="text-center"
         >
-          {/* Badge */}
+          {/* Logo */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-block mb-6"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-center mb-8"
           >
-            <div className="glass-strong rounded-full px-6 py-3 inline-flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-gray-300">Trusted by 258+ Discord members</span>
+            <div className="relative w-48 h-48 glass-strong rounded-3xl p-6 shadow-2xl shadow-blue-500/20">
+              <Image src="/ventryx-logo.png" alt="Ventryx Logo" fill className="object-contain p-4" priority />
             </div>
           </motion.div>
 
-          <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
-            <span className="block mb-2">Code Solutions</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient">
-              Without Chaos
-            </span>
-          </h1>
+          {/* Main Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+          >
+            Verify With Code, Not Chaos
+          </motion.h1>
 
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Professional Discord bots, stunning websites, Roblox scripts, and custom applications.
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-semibold">
-              {" "}
-              Your vision, our expertise.
-            </span>
-          </p>
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
+          >
+            Professional development services for Discord bots, websites, Roblox scripts, and desktop applications. Your
+            vision, our expertise.
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
             <Link href="/services">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border-0"
-                >
-                  Explore Services
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </motion.div>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-6 text-lg shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
+              >
+                Explore Services
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
             </Link>
             <Link href="/contact">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  size="lg"
-                  className="glass-strong text-white hover:glass px-10 py-6 text-lg rounded-full border border-white/20 hover:border-white/40 transition-all duration-300"
-                >
-                  Request Custom Work
-                </Button>
-              </motion.div>
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* Floating Icons */}
-        <div className="relative h-48">
-          {floatingIcons.map(({ icon: Icon, delay, color }, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: delay + 1, duration: 0.5 }}
-              className="absolute"
-              style={{
-                left: `${15 + index * 20}%`,
-                top: `${Math.sin(index) * 30 + 30}px`,
-              }}
-            >
-              <motion.div
-                animate={{
-                  y: [0, -20, 0],
-                  rotate: [0, 5, -5, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Number.POSITIVE_INFINITY,
-                  delay: index * 0.5,
-                  ease: "easeInOut",
-                }}
-                className="glass-strong p-6 rounded-3xl border border-white/20 group hover:border-white/40 transition-all duration-300 cursor-pointer"
-                whileHover={{ scale: 1.1 }}
+              <Button
+                size="lg"
+                variant="outline"
+                className="glass-strong text-white hover:bg-white/20 px-8 py-6 text-lg border-white/20 bg-transparent"
               >
-                <Icon className={`w-10 h-10 text-transparent bg-clip-text bg-gradient-to-r ${color}`} />
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
+                Get Started
+              </Button>
+            </Link>
+          </motion.div>
+
+          {/* Trust Badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex flex-wrap justify-center gap-6 mt-12"
+          >
+            <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
+              <Shield className="w-4 h-4 text-green-400" />
+              <span className="text-sm text-gray-300">Privacy First</span>
+            </div>
+            <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
+              <Users className="w-4 h-4 text-blue-400" />
+              <span className="text-sm text-gray-300">258+ Members</span>
+            </div>
+            <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
+              <Zap className="w-4 h-4 text-yellow-400" />
+              <span className="text-sm text-gray-300">Fast Delivery</span>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )

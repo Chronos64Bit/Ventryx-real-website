@@ -1,65 +1,66 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Users, Clock, Award, Heart } from "lucide-react"
+import { Check, Shield, Users, Zap } from "lucide-react"
 
 export default function About() {
-  const stats = [
-    { icon: Users, label: "Happy Clients", value: "500+" },
-    { icon: Clock, label: "Projects Completed", value: "1000+" },
-    { icon: Award, label: "Years Experience", value: "5+" },
-    { icon: Heart, label: "Custom Requests", value: "Always" },
+  const features = [
+    {
+      icon: Shield,
+      title: "Privacy First",
+      description: "Your data security is our top priority",
+    },
+    {
+      icon: Users,
+      title: "Client Focused",
+      description: "Tailored solutions for your needs",
+    },
+    {
+      icon: Zap,
+      title: "Fast Delivery",
+      description: "Quick turnaround times guaranteed",
+    },
+    {
+      icon: Check,
+      title: "Quality Assured",
+      description: "High standards in every project",
+    },
   ]
 
   return (
-    <section id="about" className="py-20 px-4 bg-black/20">
-      <div className="container mx-auto">
+    <section className="relative py-20 px-4">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">About Ventryx</h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            We're a dedicated team of developers passionate about creating exceptional digital experiences. From Discord
-            communities to web applications, we bring your ideas to life with clean code and innovative solutions.
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Why Choose Us?</h2>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            We deliver exceptional results with a commitment to quality and client satisfaction
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-          {stats.map((stat, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, index) => (
             <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              key={feature.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="glass-strong border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300"
             >
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <stat.icon className="w-8 h-8 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 p-3 mb-4">
+                <feature.icon className="w-full h-full text-white" />
               </div>
-              <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-              <div className="text-gray-300">{stat.label}</div>
+              <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
+              <p className="text-gray-300">{feature.description}</p>
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
-        >
-          <h3 className="text-2xl font-bold text-white mb-4 text-center">We Accept Custom Requests</h3>
-          <p className="text-gray-300 text-center max-w-2xl mx-auto">
-            Have a unique project in mind? We love challenges! Whether it's a complex Discord bot, a specialized web
-            application, or a custom Roblox script, we're here to make it happen. Your vision drives our innovation.
-          </p>
-        </motion.div>
       </div>
     </section>
   )
