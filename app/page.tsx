@@ -62,7 +62,7 @@ export default function HomePage() {
               alt="Ventryx"
               width={160}
               height={160}
-              className="rounded-3xl shadow-2xl shadow-purple-500/30 animate-float"
+              className="rounded-3xl border border-white/20 shadow-2xl shadow-purple-500/30 animate-float"
               priority
             />
           </motion.div>

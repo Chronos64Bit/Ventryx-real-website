@@ -23,8 +23,16 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
             className="flex justify-center mb-8"
           >
-            <div className="relative w-48 h-48 glass-strong rounded-3xl p-6 shadow-2xl shadow-blue-500/20">
-              <Image src="/ventryx-logo.png" alt="Ventryx Logo" fill className="object-contain p-4" priority />
+            <div className="glass-strong rounded-3xl p-6 shadow-2xl shadow-blue-500/20">
+              <div className="relative w-36 h-36 rounded-3xl border border-white/20 overflow-hidden">
+                <Image
+                  src="/ventryx-logo.png"
+                  alt="Ventryx Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
             </div>
           </motion.div>
 
