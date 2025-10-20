@@ -93,6 +93,13 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-glow,
+  .animate-float {
+    animation: none !important;
+  }
+}
+
 .delay-1000 {
   animation-delay: 1s;
 }

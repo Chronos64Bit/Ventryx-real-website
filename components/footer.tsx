@@ -22,29 +22,29 @@ export default function Footer() {
                 Ventryx
               </span>
             </Link>
-            <p className="text-gray-400 text-sm">Innovate. Code. Create.</p>
+            <p className="text-gray-300 text-sm">Innovate. Code. Create.</p>
           </div>
 
           <div>
             <h3 className="font-bold text-white mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm">
+                <Link href="/" className="text-gray-200 hover:text-white transition-colors text-sm">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-400 hover:text-white transition-colors text-sm">
+                <Link href="/services" className="text-gray-200 hover:text-white transition-colors text-sm">
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors text-sm">
+                <Link href="/privacy" className="text-gray-200 hover:text-white transition-colors text-sm">
                   Privacy
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors text-sm">
+                <Link href="/contact" className="text-gray-200 hover:text-white transition-colors text-sm">
                   Contact
                 </Link>
               </li>
@@ -53,7 +53,7 @@ export default function Footer() {
 
           <div>
             <h3 className="font-bold text-white mb-4">Contact</h3>
-            <div className="flex items-center gap-2 text-gray-400 text-sm">
+            <div className="flex items-center gap-2 text-gray-200 text-sm">
               <Mail size={16} />
               <a href="mailto:flux@ventryx.xyz" className="hover:text-white transition-colors">
                 flux@ventryx.xyz
@@ -62,7 +62,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 text-center text-gray-400 text-sm">
+        <div className="border-t border-white/10 pt-8 text-center text-gray-300 text-sm">
           <p className="flex items-center justify-center gap-1">
             Made with <Heart className="h-4 w-4 text-pink-400" aria-hidden="true" /> by Mark
           </p>

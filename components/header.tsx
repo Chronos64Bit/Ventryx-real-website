@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const mobileNavId = "mobile-navigation"
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -17,7 +18,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-strong border-b border-white/10">
-      <nav className="container mx-auto px-4 py-4">
+      <nav className="container mx-auto px-4 py-4" aria-label="Primary navigation">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <Image
@@ -44,13 +45,20 @@ export default function Header() {
             ))}
           </div>
 
-          <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button
+            type="button"
+            className="md:hidden text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-expanded={isMenuOpen}
+            aria-controls={mobileNavId}
+            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden mt-4 space-y-4 pb-4">
+          <div id={mobileNavId} className="md:hidden mt-4 space-y-4 pb-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

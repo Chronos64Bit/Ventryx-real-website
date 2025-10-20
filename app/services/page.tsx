@@ -5,6 +5,7 @@ import { Code2, Palette, Gamepad2, Monitor, Check } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { BackgroundOrbs } from "@/components/background-orbs"
 
 export default function ServicesPage() {
   const services = [
@@ -68,10 +69,7 @@ export default function ServicesPage() {
 
   return (
     <div className="relative min-h-screen">
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-glow" />
-        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-glow delay-1000" />
-      </div>
+      <BackgroundOrbs />
 
       <section className="container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-6xl mx-auto">

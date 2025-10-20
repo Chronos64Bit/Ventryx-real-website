@@ -277,7 +277,7 @@ async function handleVerification(interaction) {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="curl" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 glass border border-white/10">
+                <TabsList className="w-full glass border border-white/10">
                   <TabsTrigger value="curl">cURL</TabsTrigger>
                   <TabsTrigger value="javascript">JavaScript</TabsTrigger>
                   <TabsTrigger value="python">Python</TabsTrigger>

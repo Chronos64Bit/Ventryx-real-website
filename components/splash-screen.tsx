@@ -1,9 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import Image from "next/image"
 import { Shield, Zap, Star } from "lucide-react"
+
+const LOADING_STEPS = [
+  { progress: 25, label: "Syncing services..." },
+  { progress: 50, label: "Preparing experience..." },
+  { progress: 75, label: "Verifying quality..." },
+  { progress: 100, label: "Deploying interface..." },
+]
 
 interface SplashScreenProps {
   onComplete: () => void
@@ -12,33 +19,34 @@ interface SplashScreenProps {
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [progress, setProgress] = useState(0)
   const [currentStep, setCurrentStep] = useState("Booting up Ventryx...")
-
-  const steps = [
-    { progress: 25, label: "Syncing services..." },
-    { progress: 50, label: "Preparing experience..." },
-    { progress: 75, label: "Verifying quality..." },
-    { progress: 100, label: "Deploying interface..." },
-  ]
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    if (prefersReducedMotion) {
+      setProgress(100)
+      setCurrentStep("Ready to launch...")
+      const timeout = setTimeout(onComplete, 200)
+      return () => clearTimeout(timeout)
+    }
+
+    const timer = window.setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer)
-          setTimeout(onComplete, 500)
+          setTimeout(onComplete, 400)
           return 100
         }
-        const newProgress = prev + 2
-        const currentStepData = steps.find((step) => newProgress <= step.progress)
+        const nextProgress = Math.min(prev + 4, 100)
+        const currentStepData = LOADING_STEPS.find((step) => nextProgress <= step.progress)
         if (currentStepData) {
           setCurrentStep(currentStepData.label)
         }
-        return newProgress
+        return nextProgress
       })
-    }, 30)
+    }, 45)
 
     return () => clearInterval(timer)
-  }, [onComplete])
+  }, [onComplete, prefersReducedMotion])
 
   return (
     <div className="fixed inset-0 bg-gradient-to-b from-gray-950 via-black to-gray-900 flex items-center justify-center z-50">
