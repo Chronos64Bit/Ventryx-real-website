@@ -2,145 +2,180 @@
 
 import type React from "react"
 
-import { useState } from "react"
 import { motion } from "framer-motion"
-import { Send, Mail, User, Briefcase, MessageSquare } from "lucide-react"
+import { Mail, MessageSquare, Send } from "lucide-react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import { useToast } from "@/hooks/use-toast"
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const { toast } = useToast()
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+    }
 
-    setSubmitStatus("success")
-    setIsSubmitting(false)
-    ;(e.target as HTMLFormElement).reset()
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
 
-    setTimeout(() => setSubmitStatus("idle"), 5000)
+      if (response.ok) {
+        toast({
+          title: "Message Sent!",
+          description: "We'll get back to you as soon as possible.",
+        })
+        ;(e.target as HTMLFormElement).reset()
+      } else {
+        throw new Error("Failed to send message")
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <div className="relative pt-24 pb-20 px-4">
-      <div className="container mx-auto max-w-3xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">Get in Touch</h1>
-          <p className="text-xl text-gray-400">Let's discuss your project and bring your ideas to life</p>
-        </motion.div>
+    <div className="relative min-h-screen">
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-glow" />
+        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-glow delay-1000" />
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="glass-strong rounded-3xl p-8 md:p-12 border-white/10"
-        >
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-300 flex items-center gap-2">
-                  <User className="w-4 h-4" />
+      <section className="container mx-auto px-4 pt-32 pb-20">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-16"
+          >
+            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                Get In Touch
+              </span>
+            </h1>
+            <p className="text-xl text-gray-300">Let's discuss your project and bring your ideas to life</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="glass-strong rounded-2xl p-6 border-white/10 flex items-start gap-4"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 p-3 flex-shrink-0">
+                <Mail className="w-full h-full text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Email Us</h3>
+                <p className="text-gray-400">flux@ventryx.xyz</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="glass-strong rounded-2xl p-6 border-white/10 flex items-start gap-4"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 p-3 flex-shrink-0">
+                <MessageSquare className="w-full h-full text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Discord</h3>
+                <p className="text-gray-400">258+ Members</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="glass-strong rounded-2xl p-8 border-white/10"
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium mb-2">
                   Name
-                </Label>
+                </label>
                 <Input
                   id="name"
                   name="name"
+                  type="text"
                   required
+                  className="glass border-white/20 text-white placeholder:text-gray-500 bg-transparent"
                   placeholder="Your name"
-                  className="glass border-white/20 text-white placeholder:text-gray-500"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-300 flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium mb-2">
                   Email
-                </Label>
+                </label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   required
+                  className="glass border-white/20 text-white placeholder:text-gray-500 bg-transparent"
                   placeholder="your@email.com"
-                  className="glass border-white/20 text-white placeholder:text-gray-500"
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="projectType" className="text-gray-300 flex items-center gap-2">
-                <Briefcase className="w-4 h-4" />
-                Project Type
-              </Label>
-              <Input
-                id="projectType"
-                name="projectType"
-                required
-                placeholder="Discord Bot, Website, etc."
-                className="glass border-white/20 text-white placeholder:text-gray-500"
-              />
-            </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                  Message
+                </label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={6}
+                  className="glass border-white/20 text-white placeholder:text-gray-500 bg-transparent resize-none"
+                  placeholder="Tell us about your project..."
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="message" className="text-gray-300 flex items-center gap-2">
-                <MessageSquare className="w-4 h-4" />
-                Message
-              </Label>
-              <Textarea
-                id="message"
-                name="message"
-                required
-                placeholder="Tell us about your project..."
-                rows={6}
-                className="glass border-white/20 text-white placeholder:text-gray-500 resize-none"
-              />
-            </div>
-
-            {submitStatus === "success" && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl glass border-green-500/50 text-green-400 text-center"
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6 text-lg shadow-lg shadow-purple-500/30"
               >
-                ✓ Message sent! We'll get back to you soon.
-              </motion.div>
-            )}
-
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6 text-lg"
-            >
-              {isSubmitting ? (
-                <>Sending...</>
-              ) : (
-                <>
-                  <Send className="w-5 h-5 mr-2" />
-                  Send Message
-                </>
-              )}
-            </Button>
-          </form>
-
-          <div className="mt-8 pt-8 border-t border-white/10 text-center">
-            <p className="text-gray-400 mb-3">Or email us directly:</p>
-            <a
-              href="mailto:flux@ventryx.xyz"
-              className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors text-lg"
-            >
-              <Mail className="w-5 h-5" />
-              flux@ventryx.xyz
-            </a>
-          </div>
-        </motion.div>
-      </div>
+                {isSubmitting ? (
+                  "Sending..."
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="ml-2 w-5 h-5" />
+                  </>
+                )}
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
     </div>
   )
 }

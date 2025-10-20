@@ -43,26 +43,28 @@ export default function HomePage() {
 
   return (
     <div className="relative">
-      {/* Animated Background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/4 -left-48 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-glow" />
         <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-glow delay-1000" />
         <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl animate-glow delay-2000" />
       </div>
 
-      {/* Hero Section */}
       <section className="container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             className="mb-12 flex justify-center"
           >
-            <div className="relative w-40 h-40 glass-strong rounded-3xl p-6 shadow-2xl shadow-purple-500/30 animate-float">
-              <Image src="/ventryx-logo.png" alt="Ventryx" fill className="object-contain p-2" priority />
-            </div>
+            <Image
+              src="/ventryx-logo.png"
+              alt="Ventryx"
+              width={160}
+              height={160}
+              className="rounded-3xl shadow-2xl shadow-purple-500/30 animate-float"
+              priority
+            />
           </motion.div>
 
           <motion.h1
@@ -72,10 +74,8 @@ export default function HomePage() {
             className="text-6xl md:text-8xl font-extrabold mb-6 leading-tight"
           >
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Verify With Code
+              Innovate. Code. Create.
             </span>
-            <br />
-            <span className="text-white">Not Chaos</span>
           </motion.h1>
 
           <motion.p
@@ -113,7 +113,6 @@ export default function HomePage() {
             </Link>
           </motion.div>
 
-          {/* Trust Indicators */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -134,7 +133,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-5xl mx-auto">
           <div className="glass-strong rounded-3xl p-8 md:p-12">
@@ -159,7 +157,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Services Preview */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -214,7 +211,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="container mx-auto px-4 py-20 mb-20">
         <div className="max-w-4xl mx-auto">
           <motion.div

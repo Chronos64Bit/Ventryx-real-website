@@ -1,80 +1,66 @@
 "use client"
 
 import Link from "next/link"
-import { Mail, Github, Twitter, MessageCircle } from "lucide-react"
-import { motion } from "framer-motion"
 import Image from "next/image"
+import { Mail, Heart } from "lucide-react"
 
-export function Footer() {
-  const currentYear = new Date().getFullYear()
-
-  const links = [
-    { href: "/services", label: "Services" },
-    { href: "/privacy", label: "Privacy" },
-    { href: "/contact", label: "Contact" },
-  ]
-
-  const socials = [
-    { icon: Mail, href: "mailto:flux@ventryx.xyz", label: "Email" },
-    { icon: MessageCircle, href: "#", label: "Discord" },
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-  ]
-
+export default function Footer() {
   return (
-    <footer className="relative border-t border-white/10">
+    <footer className="glass-strong border-t border-white/10 mt-auto">
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <Link href="/" className="flex items-center gap-3 mb-4 group">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden">
-                <Image src="/ventryx-logo.png" alt="Ventryx" fill className="object-contain p-1" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <Link href="/" className="flex items-center gap-3 mb-4">
+              <Image src="/ventryx-logo.png" alt="Ventryx" width={40} height={40} className="rounded-2xl" />
+              <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
                 Ventryx
               </span>
             </Link>
-            <p className="text-gray-400 text-sm">
-              Professional development services for Discord bots, websites, Roblox scripts, and desktop applications.
-            </p>
+            <p className="text-gray-400 text-sm">Innovate. Code. Create.</p>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4 text-white">Quick Links</h3>
-            <div className="space-y-2">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
-                >
-                  {link.label}
+            <h3 className="font-bold text-white mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Home
                 </Link>
-              ))}
-            </div>
+              </li>
+              <li>
+                <Link href="/services" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Privacy
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Contact
+                </Link>
+              </li>
+            </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4 text-white">Connect</h3>
-            <div className="flex gap-3">
-              {socials.map((social) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="w-10 h-10 rounded-xl glass hover:glass-strong flex items-center justify-center transition-all"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5 text-gray-400" />
-                </motion.a>
-              ))}
+            <h3 className="font-bold text-white mb-4">Contact</h3>
+            <div className="flex items-center gap-2 text-gray-400 text-sm">
+              <Mail size={16} />
+              <a href="mailto:flux@ventryx.xyz" className="hover:text-white transition-colors">
+                flux@ventryx.xyz
+              </a>
             </div>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-400 text-sm">© {currentYear} Ventryx. All rights reserved.</p>
-          <p className="text-gray-400 text-sm">Verify With Code, Not Chaos</p>
+        <div className="border-t border-white/10 pt-8 text-center text-gray-400 text-sm">
+          <p className="flex items-center justify-center gap-1">
+            Made by Mark <3
+          </p>
+          <p className="mt-2">© {new Date().getFullYear()} Ventryx. All rights reserved.</p>
         </div>
       </div>
     </footer>
