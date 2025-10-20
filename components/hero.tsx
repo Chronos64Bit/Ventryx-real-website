@@ -77,7 +77,7 @@ export default function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="glass-strong text-white hover:bg-white/20 px-8 py-6 text-lg border-white/20 bg-transparent"
+                className="glass-strong text-white hover:bg-white/20 px-8 py-6 text-lg border-white/20"
               >
                 Get Started
               </Button>
