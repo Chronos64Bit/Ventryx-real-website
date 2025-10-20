@@ -64,7 +64,7 @@ export default function Footer() {
 
         <div className="border-t border-white/10 pt-8 text-center text-gray-400 text-sm">
           <p className="flex items-center justify-center gap-1">
-            Made by Mark <3
+            Made with <Heart className="h-4 w-4 text-pink-400" aria-hidden="true" /> by Mark
           </p>
           <p className="mt-2">© {new Date().getFullYear()} Ventryx. All rights reserved.</p>
         </div>
