@@ -106,7 +106,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="glass-strong border-white/20 text-white hover:bg-white/10 px-8 py-6 text-lg bg-transparent"
+                className="glass-strong border-white/20 text-white hover:bg-white/10 px-8 py-6 text-lg"
               >
                 Get Started
               </Button>
@@ -201,7 +201,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="glass border-white/20 text-white hover:bg-white/10 bg-transparent"
+                className="glass border-white/20 text-white hover:bg-white/10"
               >
                 View All Services
                 <ArrowRight className="ml-2 w-5 h-5" />

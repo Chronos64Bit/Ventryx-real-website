@@ -125,7 +125,7 @@ export default function ContactPage() {
                   name="name"
                   type="text"
                   required
-                  className="glass border-white/20 text-white placeholder:text-gray-500 bg-transparent"
+                  className="glass border-white/20 text-white placeholder:text-gray-500"
                   placeholder="Your name"
                 />
               </div>
@@ -139,7 +139,7 @@ export default function ContactPage() {
                   name="email"
                   type="email"
                   required
-                  className="glass border-white/20 text-white placeholder:text-gray-500 bg-transparent"
+                  className="glass border-white/20 text-white placeholder:text-gray-500"
                   placeholder="your@email.com"
                 />
               </div>
@@ -153,7 +153,7 @@ export default function ContactPage() {
                   name="message"
                   required
                   rows={6}
-                  className="glass border-white/20 text-white placeholder:text-gray-500 bg-transparent resize-none"
+                  className="glass border-white/20 text-white placeholder:text-gray-500 resize-none"
                   placeholder="Tell us about your project..."
                 />
               </div>
